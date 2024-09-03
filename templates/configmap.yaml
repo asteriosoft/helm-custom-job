@@ -1,0 +1,11 @@
+{{- if .Values.script }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "custom-job.configmap" . }}
+  labels:
+{{ include "custom-job.labels" . | indent 4 }}
+data:
+  script:
+{{ toYaml .Values.script | indent 4 }}
+{{- end }}

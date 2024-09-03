@@ -1,0 +1,64 @@
+{{- if .Values.job.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: {{ include "custom-job.namespace" . }}
+  name: {{ include "custom-job.cronJob" . }}
+  labels:
+{{ include "custom-job.labels" . | indent 4 }}
+spec:
+  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
+  backoffLimit: {{ .Values.job.backoffLimit }}
+  template:
+    metadata:
+      labels:
+{{ include "custom-job.podLabels" . | indent 8 }}
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - name: {{ include "custom-job.name" . }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        volumeMounts:
+        {{- if .Values.script }}
+          - name: script
+            mountPath: "/scripts"
+        {{- end }}
+        {{- if .Values.volumeMounts }}
+{{ toYaml .Values.volumeMounts | indent 16 }}
+        {{- end}}
+        {{- if .Values.script }}
+        command: ["/scripts/script"]
+        {{- end }}
+        env:
+          {{- range $key, $value := .Values.customEnv }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- range $key, $value := .Values.secretEnv }}
+          - name: {{ $key | quote }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "custom-job.secret" $ }}
+                key: {{ $key | quote }}
+          {{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+      restartPolicy: {{ .Values.job.restartPolicy }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      volumes:
+      {{- if .Values.script }}
+        - name: script
+          configMap:
+            name: {{ include "custom-job.configmap" . }}
+            defaultMode: 0755
+      {{- end }}
+      {{- if .Values.volumes }}
+{{ toYaml .Values.volumes | trim | indent 12 }}
+      {{- end}}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
