@@ -2,14 +2,14 @@
 
 A Helm chart for deploying customized k8s jobs
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Installing the Chart
 
 To install the chart with the release name `my-release`:
 
 ```console
-$ helm repo add helm-custom-job git+https://bitbucket.org/asteriosoft/helm-custom-job?ref=0.1.0
+$ helm repo add helm-custom-job git+https://bitbucket.org/asteriosoft/helm-custom-job?ref=0.1.1
 $ helm install my-release helm-custom-job/custom-job
 ```
 

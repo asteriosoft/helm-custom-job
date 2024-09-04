@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   namespace: {{ include "custom-job.namespace" . }}
-  name: {{ include "custom-job.cronJob" . }}
+  name: {{ include "custom-job.job" . }}
   labels:
 {{ include "custom-job.labels" . | indent 4 }}
 spec:
