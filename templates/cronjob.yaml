@@ -17,6 +17,9 @@ spec:
           labels:
 {{ include "custom-job.podLabels" . | indent 12 }}
         spec:
+        {{- if .Values.serviceAccount.created }}
+          serviceAccountName: "{{ .Values.serviceAccount.name }}"
+        {{- end }}
           containers:
             - name: {{ include "custom-job.name" . }}
               image: "{{ .Values.image }}:{{ .Values.imageTag }}"

@@ -14,6 +14,9 @@ spec:
       labels:
 {{ include "custom-job.podLabels" . | indent 8 }}
     spec:
+      {{- if .Values.serviceAccount.created }}
+      serviceAccountName: "{{ .Values.serviceAccount.name }}"
+      {{- end }}
       terminationGracePeriodSeconds: 0
       containers:
       - name: {{ include "custom-job.name" . }}

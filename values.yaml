@@ -41,6 +41,13 @@ cronjob:
   # -- [Restart policy](https://kubernetes.io/docs/concepts/workloads/controllers/job/#handling-pod-and-container-failures) of the job
   restartPolicy: "Never"
 
+# -- Pod service account
+serviceAccount: {}
+  # name: custom-job-sa
+  # created: true
+  # annotations:
+  #   eks.amazonaws.com/role-arn: "arn:aws:iam::xxxxxxxxxxxx:role/eks-custom-job"
+
 # -- Container environment variables
 customEnv:
   # AWS_S3_BUCKET: "dummy-bucket"
